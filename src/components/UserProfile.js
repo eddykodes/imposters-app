@@ -16,27 +16,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function JoinRoomForm({ user, setShowUserProfile }) {
+export default function UserProfile({user, setShowUserProfile}) {
   const classes = useStyles()
-  const [room, setRoom] = useState('')
+  const [name, setName] = useState('')
 
   useEffect(() => {
-    setRoom(user.room)
+    setName(user.name)
   }, [user])
 
   return (
     <form>
       <Box textAlign='center'>
-        <Typography variant='overline'>Enter Room Code</Typography>
+        <Typography variant='overline'>Enter Your Name</Typography>
       </Box>
       <FormControl fullWidth className={classes.formInput}>
         <FilledInput 
           required 
-          value={room} 
-          onChange={e => setRoom(e.target.value)}
+          value={name} 
+          onChange={e => setName(e.target.value)}
         />
       </FormControl>
-      <Button fullWidth onClick={() => setShowUserProfile(true)}>
+      <Button fullWidth onClick={() => setShowUserProfile(false)}>
         Join Room
       </Button>
     </form>

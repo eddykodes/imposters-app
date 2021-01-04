@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import logo from '../assets/incognito.svg'
 import { SocketContext } from '../context/SocketContext'
 import JoinRoomForm from '../components/JoinRoomForm'
+import UserProfile from '../components/UserProfile'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -41,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles()
   const user = useContext(SocketContext)
+  
+  const [showUserProfile, setShowUserProfile] = useState(false)
 
   return (
     <Grid container justify='center' alignItems='center' className={classes.root}>
@@ -55,11 +58,20 @@ export default function Home() {
             </Box>
         </Grid>
         <Grid item xs={11} sm={9} md={7} lg={4}>
-          <JoinRoomForm user={user} />  
-          <Box my={2}>
-            <Divider fullWidth />
-          </Box>
-          <Button fullWidth>Create Room</Button>
+          {
+            showUserProfile ? (
+              <UserProfile user={user} setShowUserProfile={setShowUserProfile} />
+            ) : (
+              <>
+                <JoinRoomForm user={user} setShowUserProfile={setShowUserProfile} />  
+                <Box my={2}>
+                  <Divider fullWidth />
+                </Box>
+                <Button fullWidth>Create Room</Button>
+              </>
+            )
+          }
+          
         </Grid>
       </Grid>
     </Grid>

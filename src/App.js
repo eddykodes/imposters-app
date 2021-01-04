@@ -10,7 +10,7 @@ import NotFound from './pages/NotFound'
 
 // Material UI
 import { ThemeProvider } from '@material-ui/core/styles'
-import theme from './context/Theme'
+import theme from './utils/Theme'
 
 function App() {
   return (
