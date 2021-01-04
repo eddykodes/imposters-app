@@ -5,7 +5,12 @@ export const SocketContext = createContext()
 
 export const SocketContextProvider = props => {
 
-  const [user, setUser] = useState(null)
+  const defaultUser = {
+    id: 0,
+    name: '',
+    room: '',
+  }
+  const [user, setUser] = useState(defaultUser)
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -13,11 +18,8 @@ export const SocketContextProvider = props => {
         ...user,
         id: socket.id
       })
+      console.log('connected with ID:', socket.id)
     })
-
-    return () => {
-      socket.off()
-    }
   }, [user])
 
   return (
