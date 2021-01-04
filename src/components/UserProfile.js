@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext } from 'react'
+import { SocketContext } from '../context/SocketContext'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import FormControl from '@material-ui/core/FormControl'
 import FilledInput from '@material-ui/core/FilledInput'
@@ -16,29 +18,48 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserProfile({user, setShowUserProfile}) {
+export default function UserProfile({ setShowUserProfile }) {
   const classes = useStyles()
-  const [name, setName] = useState('')
+  const { user, setUser, joinRoom } = useContext(SocketContext)
 
-  useEffect(() => {
-    setName(user.name)
-  }, [user])
+  const handleChange = (event) => {
+    setUser({...user, name: event.target.value})
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    joinRoom()
+  }
+  
+  const handleBack = (event) => {
+    event.preventDefault()
+    setShowUserProfile(false)
+  }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <Box textAlign='center'>
         <Typography variant='overline'>Enter Your Name</Typography>
       </Box>
       <FormControl fullWidth className={classes.formInput}>
         <FilledInput 
           required 
-          value={name} 
-          onChange={e => setName(e.target.value)}
+          value={user.name} 
+          onChange={handleChange}
         />
       </FormControl>
-      <Button fullWidth onClick={() => setShowUserProfile(false)}>
-        Join Room
-      </Button>
+      <Grid container spacing={1}>
+        <Grid item xs={12} sm={6}>
+          <Button fullWidth type='submit' onClick={handleBack}>
+            Back
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Button fullWidth type='submit' onClick={handleSubmit}>
+            Join Room
+          </Button>
+        </Grid>
+      </Grid>
     </form>
   )
 }

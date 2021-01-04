@@ -13,10 +13,10 @@ const theme = createMuiTheme({
       variant: 'contained',
     },
     MuiFormControl: {
-      fillWidth: true,
+      fullWidth: true,
       margin: 'dense',
       size: 'small',
-      hiddenLabel: 'true',
+      hiddenLabel: true,
     },
     MuiFilledInput: {
       disableUnderline: true,

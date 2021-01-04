@@ -7,8 +7,8 @@ export const SocketContextProvider = props => {
 
   const defaultUser = {
     id: 0,
-    name: '',
-    room: '',
+    name: 'default',
+    room: 'default',
   }
   const [user, setUser] = useState(defaultUser)
 
@@ -22,8 +22,19 @@ export const SocketContextProvider = props => {
     })
   }, [user])
 
+  const joinRoom = () => {
+    socket.emit('joinRoom', user, (error) => {
+      if (error) {
+        console.log('error', error)
+        return error
+      }
+        
+      console.log('user joined room', user)
+    })
+  }
+
   return (
-    <SocketContext.Provider value={user}>
+    <SocketContext.Provider value={{ user, setUser, joinRoom }}>
       { props.children }
     </SocketContext.Provider>
   )

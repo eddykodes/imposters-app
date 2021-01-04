@@ -1,6 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import logo from '../assets/incognito.svg'
-import { SocketContext } from '../context/SocketContext'
 import JoinRoomForm from '../components/JoinRoomForm'
 import UserProfile from '../components/UserProfile'
 
@@ -41,14 +40,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles()
-  const user = useContext(SocketContext)
   
   const [showUserProfile, setShowUserProfile] = useState(false)
 
   return (
     <Grid container justify='center' alignItems='center' className={classes.root}>
       <Grid container justify='center'>    
-        <Grid item xs={12} justify='center'>
+        <Grid item xs={12}>
             <Box className={classes.logo} display='flex' justifyContent='center' alignItems='center'>
               <img alt='Logo' src={logo} />
             </Box>
@@ -60,12 +58,12 @@ export default function Home() {
         <Grid item xs={11} sm={9} md={7} lg={4}>
           {
             showUserProfile ? (
-              <UserProfile user={user} setShowUserProfile={setShowUserProfile} />
+              <UserProfile setShowUserProfile={setShowUserProfile} />
             ) : (
               <>
-                <JoinRoomForm user={user} setShowUserProfile={setShowUserProfile} />  
+                <JoinRoomForm setShowUserProfile={setShowUserProfile} />  
                 <Box my={2}>
-                  <Divider fullWidth />
+                  <Divider />
                 </Box>
                 <Button fullWidth>Create Room</Button>
               </>
