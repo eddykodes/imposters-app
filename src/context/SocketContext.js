@@ -6,9 +6,8 @@ export const SocketContext = createContext()
 export const SocketContextProvider = props => {
 
   const defaultUser = {
-    id: 0,
-    name: 'default',
-    room: 'default',
+    name: '',
+    room: '',
   }
   const [user, setUser] = useState(defaultUser)
   const [error, setError] = useState(null)
@@ -24,7 +23,7 @@ export const SocketContextProvider = props => {
     })
   }, [user])
 
-  const joinRoom = (callback) => {
+  const joinRoom = (user, callback) => {
     socket.emit('joinRoom', user, (payload) => {
       if (payload.error)
         return setError(payload.error)
@@ -34,8 +33,18 @@ export const SocketContextProvider = props => {
     })
   }
 
+  const createRoom = (callback) => {
+    socket.emit('createRoom', user, (payload) => {
+      if (payload.error)
+        return setError(payload.error)
+
+      setUser(payload.newUser)
+      joinRoom(payload.newUser, callback)
+    })
+  }
+
   return (
-    <SocketContext.Provider value={{ user, setUser, error, joinRoom }}>
+    <SocketContext.Provider value={{ user, setUser, error, joinRoom, createRoom }}>
       { props.children }
     </SocketContext.Provider>
   )

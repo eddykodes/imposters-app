@@ -40,8 +40,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles()
-  
   const [showUserProfile, setShowUserProfile] = useState(false)
+  const [createRequest, setCreateRequest] = useState(false)
+  
+  const handleCreateRequest = () => {
+    setCreateRequest(true)
+    setShowUserProfile(true)
+  }
 
   return (
     <Grid container justify='center' alignItems='center' className={classes.root}>
@@ -58,14 +63,18 @@ export default function Home() {
         <Grid item xs={11} sm={9} md={7} lg={4}>
           {
             showUserProfile ? (
-              <UserProfile setShowUserProfile={setShowUserProfile} />
+              <UserProfile 
+                createRequest={createRequest} 
+                setCreateRequest={setCreateRequest} 
+                setShowUserProfile={setShowUserProfile} 
+              />
             ) : (
               <>
                 <JoinRoomForm setShowUserProfile={setShowUserProfile} />  
                 <Box my={2}>
                   <Divider />
                 </Box>
-                <Button fullWidth>Create Room</Button>
+                <Button fullWidth onClick={handleCreateRequest}>Create Room</Button>
               </>
             )
           }

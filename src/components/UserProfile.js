@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserProfile({ setShowUserProfile }) {
+export default function UserProfile({ createRequest, setCreateRequest, setShowUserProfile }) {
   const classes = useStyles()
-  const { user, setUser, error, joinRoom } = useContext(SocketContext)
+  const { user, setUser, error, joinRoom, createRoom } = useContext(SocketContext)
   let history = useHistory()
 
   const handleChange = (event) => {
@@ -29,14 +29,29 @@ export default function UserProfile({ setShowUserProfile }) {
   }
 
   const handleSubmit = (event) => {
+    if (createRequest)
+      return handleCreateRoom(event)
+    
+    return handleJoinRoom(event)
+  }
+
+  const handleJoinRoom = (event) => {
     event.preventDefault()
-    joinRoom((room) => {
+    joinRoom(user, (room) => {
       history.push(`/room/${room}`)
     })     
+  }
+
+  const handleCreateRoom = (event) => {
+    event.preventDefault()
+    createRoom(room => {
+      history.push(`/room/${room}`)
+    })
   }
   
   const handleBack = (event) => {
     event.preventDefault()
+    setCreateRequest(false)
     setShowUserProfile(false)
   }
 
@@ -66,7 +81,7 @@ export default function UserProfile({ setShowUserProfile }) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Button fullWidth type='submit' onClick={handleSubmit}>
-            Join Room
+            {createRequest ? 'Create Room' : 'Join Room'}
           </Button>
         </Grid>
       </Grid>
