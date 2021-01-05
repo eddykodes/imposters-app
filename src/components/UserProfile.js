@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { SocketContext } from '../context/SocketContext'
+import { useHistory } from 'react-router-dom'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -20,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile({ setShowUserProfile }) {
   const classes = useStyles()
-  const { user, setUser, joinRoom } = useContext(SocketContext)
+  const { user, setUser, error, joinRoom } = useContext(SocketContext)
+  let history = useHistory()
 
   const handleChange = (event) => {
     setUser({...user, name: event.target.value})
@@ -28,7 +30,9 @@ export default function UserProfile({ setShowUserProfile }) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    joinRoom()
+    joinRoom((room) => {
+      history.push(`/room/${room}`)
+    })     
   }
   
   const handleBack = (event) => {
@@ -48,6 +52,12 @@ export default function UserProfile({ setShowUserProfile }) {
           onChange={handleChange}
         />
       </FormControl>
+      {
+        error && 
+        <Box textAlign='center' mb={2}>
+          <Typography variant='overline' color='error'>{error}</Typography>
+        </Box>
+      }
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
           <Button fullWidth type='submit' onClick={handleBack}>
