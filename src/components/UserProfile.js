@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { SocketContext } from '../context/SocketContext'
 import { useHistory } from 'react-router-dom'
 
@@ -21,14 +21,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile({ createRequest, setCreateRequest, setShowUserProfile }) {
   const classes = useStyles()
-  const { user, setUser, error, joinRoom, createRoom } = useContext(SocketContext)
+  const { user, error, setError, joinRoom, createRoom } = useContext(SocketContext)
+  const [ name, setName ] = useState('')
   let history = useHistory()
 
   const handleChange = (event) => {
-    setUser({...user, name: event.target.value})
+    setName(event.target.value)
   }
 
   const handleSubmit = (event) => {
+    event.preventDefault()
     if (createRequest)
       return handleCreateRoom(event)
     
@@ -37,7 +39,11 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
 
   const handleJoinRoom = (event) => {
     event.preventDefault()
-    joinRoom(user, (room) => {
+    const userData = {
+      ...user,
+      name
+    }
+    joinRoom(userData, (room) => {
       history.push(`/room/${room}`)
     })     
   }
@@ -51,6 +57,7 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   
   const handleBack = (event) => {
     event.preventDefault()
+    setError(null)
     setCreateRequest(false)
     setShowUserProfile(false)
   }
@@ -58,24 +65,22 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   return (
     <form onSubmit={handleSubmit}>
       <Box textAlign='center'>
-        <Typography variant='overline'>Enter Your Name</Typography>
+        {
+          !error 
+            ? <Typography variant='overline'>Enter Your Name</Typography>
+            : <Typography variant='overline' color='error'>{error}</Typography>
+        }
       </Box>
       <FormControl fullWidth className={classes.formInput}>
         <FilledInput 
           required 
-          value={user.name} 
+          value={name} 
           onChange={handleChange}
         />
       </FormControl>
-      {
-        error && 
-        <Box textAlign='center' mb={2}>
-          <Typography variant='overline' color='error'>{error}</Typography>
-        </Box>
-      }
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
-          <Button fullWidth type='submit' onClick={handleBack}>
+          <Button fullWidth onClick={handleBack}>
             Back
           </Button>
         </Grid>

@@ -29,6 +29,7 @@ export const SocketContextProvider = props => {
         return setError(payload.error)
       
       setError(null)
+      setUser(user)
       callback(payload.room)
     })
   }
@@ -39,12 +40,28 @@ export const SocketContextProvider = props => {
         return setError(payload.error)
 
       setUser(payload.newUser)
+      setError(null)
       joinRoom(payload.newUser, callback)
     })
   }
 
+  const confirmRoom = (room, callback) => {
+    socket.emit('confirmRoom', room, (payload) => {
+      if (payload.error)
+        return setError(payload.error)
+      
+      setUser({
+        ...user,
+        room
+      })
+
+      setError(null)
+      callback()
+    })
+  }
+
   return (
-    <SocketContext.Provider value={{ user, setUser, error, joinRoom, createRoom }}>
+    <SocketContext.Provider value={{ user, setUser, error, setError, joinRoom, createRoom, confirmRoom }}>
       { props.children }
     </SocketContext.Provider>
   )

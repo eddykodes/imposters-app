@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { SocketContext } from '../context/SocketContext'
 import logo from '../assets/incognito.svg'
 import JoinRoomForm from '../components/JoinRoomForm'
 import UserProfile from '../components/UserProfile'
@@ -40,10 +41,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles()
+  const { setError } = useContext(SocketContext)
   const [showUserProfile, setShowUserProfile] = useState(false)
   const [createRequest, setCreateRequest] = useState(false)
   
   const handleCreateRequest = () => {
+    setError(null)
     setCreateRequest(true)
     setShowUserProfile(true)
   }

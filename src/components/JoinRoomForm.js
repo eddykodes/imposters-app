@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { SocketContext } from '../context/SocketContext'
 
 // Material UI
@@ -19,26 +19,31 @@ const useStyles = makeStyles((theme) => ({
 
 export default function JoinRoomForm({ setShowUserProfile }) {
   const classes = useStyles()
-  const { user, setUser } = useContext(SocketContext)
+  const { error, confirmRoom } = useContext(SocketContext)
+  const [room, setRoom] = useState('')
 
   const handleChange = (event) => {
-    setUser({...user, room: event.target.value})
+    setRoom(event.target.value)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setShowUserProfile(true)
+    confirmRoom(room, () => setShowUserProfile(true))
   }
-
+  
   return (
     <form onSubmit={handleSubmit}>
       <Box textAlign='center'>
-        <Typography variant='overline'>Enter Room Code</Typography>
+        {
+          !error 
+            ? <Typography variant='overline'>Enter Room Code</Typography>
+            : <Typography variant='overline' color='error'>{error}</Typography>
+        }
       </Box>
       <FormControl className={classes.formInput}>
         <FilledInput 
           required 
-          value={user.room} 
+          value={room} 
           onChange={handleChange}
         />
       </FormControl>
