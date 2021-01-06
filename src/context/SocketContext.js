@@ -34,7 +34,7 @@ export const SocketContextProvider = props => {
     })
   }
 
-  const createRoom = (callback) => {
+  const createRoom = (user, callback) => {
     socket.emit('createRoom', user, (payload) => {
       if (payload.error)
         return setError(payload.error)

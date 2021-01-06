@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { SocketContext } from '../context/SocketContext'
 
 // Material UI
@@ -19,8 +19,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function JoinRoomForm({ setShowUserProfile }) {
   const classes = useStyles()
-  const { error, confirmRoom } = useContext(SocketContext)
+  const { user, error, confirmRoom } = useContext(SocketContext)
   const [room, setRoom] = useState('')
+
+  useEffect(() => {
+    if (user.room)
+      setRoom(user.room)
+  }, [user])
 
   const handleChange = (event) => {
     setRoom(event.target.value)

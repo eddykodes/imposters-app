@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { SocketContext } from '../context/SocketContext'
 import { useHistory } from 'react-router-dom'
 
@@ -25,6 +25,16 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   const [ name, setName ] = useState('')
   let history = useHistory()
 
+  useEffect(() => {
+    if (user.name)
+      setName(user.name)
+  }, [user])
+
+  const userData = {
+    ...user,
+    name
+  }
+
   const handleChange = (event) => {
     setName(event.target.value)
   }
@@ -38,17 +48,13 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   }
 
   const handleJoinRoom = () => {
-    const userData = {
-      ...user,
-      name
-    }
     joinRoom(userData, (room) => {
       history.push(`/room/${room}`)
     })     
   }
 
   const handleCreateRoom = () => {
-    createRoom(room => {
+    createRoom(userData, (room) => {
       history.push(`/room/${room}`)
     })
   }
