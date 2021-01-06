@@ -4,6 +4,9 @@ import './App.css'
 // Context
 import { SocketContextProvider } from './context/SocketContext'
 
+// Components
+import Layout from './components/Layout'
+
 // Pages
 import Home from './pages/Home'
 import Room from './pages/Room'
@@ -17,13 +20,15 @@ function App() {
   return (
     <SocketContextProvider>
       <ThemeProvider theme={theme}>
-        <Router>
-          <Switch>
-            <Route exact path='/room/:id' component={Room} />
-            <Route exact path='/' component={Home} />
-            <Route component={NotFound} />
-          </Switch>
-        </Router>
+        <Layout>
+          <Router>
+            <Switch>
+              <Route exact path='/room/:id' component={Room} />
+              <Route exact path='/' component={Home} />
+              <Route component={NotFound} />
+            </Switch>
+          </Router>
+        </Layout>
       </ThemeProvider>
     </SocketContextProvider>
 

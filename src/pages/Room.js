@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { SocketContext } from '../context/SocketContext'
-
+import UserCard from '../components/UserCard'
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -20,10 +20,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Room() {
   const classes = useStyles()
-  const { users, error, getRoomData } = useContext(SocketContext)
+  const { user, users, error, getRoomData } = useContext(SocketContext)
   const { id } = useParams()
+  let history = useHistory()
 
   useEffect(() => {
+    if (user.room !== id)
+      return history.push('/')
+      
     getRoomData(id)
     // eslint-disable-next-line
   }, [id])
@@ -45,9 +49,8 @@ export default function Room() {
         }
         <Box>
           { users && users.map(user => (
-            <Typography key={user.id}>{user.id}</Typography>
+            <UserCard key={user.id} user={user} size='medium' />
           ))}
-          
         </Box>
       </Box>
       <Box display='flex' justifyContent='center' py={3}>
