@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { SocketContext } from '../context/SocketContext'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -18,10 +20,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Room() {
   const classes = useStyles()
+  const { users, error, getRoomData } = useContext(SocketContext)
+  const { id } = useParams()
+
+  useEffect(() => {
+    getRoomData(id)
+    // eslint-disable-next-line
+  }, [id])
 
   return (
     <Box display='flex' flexDirection='column' className={classes.root}>
-      <Box item xs={12} py={3}>
+      <Box py={3}>
         <Typography variant='h2' align='center' className={classes.header}>Lobby</Typography>
         <Box display='flex' justifyContent='center'>
           <Box mr={3}>
@@ -31,8 +40,14 @@ export default function Room() {
         </Box>
       </Box>
       <Box display='flex' flexGrow={1}>
+        {
+          error && <Typography color='error'>{error}</Typography>
+        }
         <Box>
-          <Typography>Users go here....</Typography>
+          { users && users.map(user => (
+            <Typography key={user.id}>{user.id}</Typography>
+          ))}
+          
         </Box>
       </Box>
       <Box display='flex' justifyContent='center' py={3}>

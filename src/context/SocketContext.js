@@ -11,7 +11,7 @@ export const SocketContextProvider = props => {
   }
   const [user, setUser] = useState(defaultUser)
   const [error, setError] = useState(null)
-  
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -60,8 +60,17 @@ export const SocketContextProvider = props => {
     })
   }
 
+  const getRoomData = (room) => {
+    socket.emit('getRoomData', room, (payload) => {
+      if (payload.error)
+        return setError(payload.error)
+
+      setUsers(payload.roomData.users)
+    })
+  }
+
   return (
-    <SocketContext.Provider value={{ user, setUser, error, setError, joinRoom, createRoom, confirmRoom }}>
+    <SocketContext.Provider value={{ user, setUser, error, setError, users, joinRoom, createRoom, confirmRoom, getRoomData }}>
       { props.children }
     </SocketContext.Provider>
   )
