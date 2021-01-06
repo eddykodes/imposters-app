@@ -23,6 +23,12 @@ export const SocketContextProvider = props => {
     })
   }, [user])
 
+  useEffect(() => {
+    socket.on('userJoin', (payload) => {
+      setUsers(payload.users)
+    })
+  }, [users])
+
   const joinRoom = (user, callback) => {
     socket.emit('joinRoom', user, (payload) => {
       if (payload.error)
