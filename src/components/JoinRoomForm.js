@@ -23,7 +23,7 @@ export default function JoinRoomForm({ setShowUserProfile }) {
   const [room, setRoom] = useState('')
 
   useEffect(() => {
-    if (user.room)
+    if (user && user.room)
       setRoom(user.room)
   }, [user])
 

@@ -26,7 +26,7 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   let history = useHistory()
 
   useEffect(() => {
-    if (user.name)
+    if (user && user.name)
       setName(user.name)
   }, [user])
 

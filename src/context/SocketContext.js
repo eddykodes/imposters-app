@@ -4,16 +4,21 @@ import { socket } from '../socket'
 export const SocketContext = createContext()
 
 export const SocketContextProvider = props => {
-
-  const defaultUser = {
-    name: '',
-    room: '',
-  }
-  const [user, setUser] = useState(defaultUser)
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
   const [error, setError] = useState(null)
   const [users, setUsers] = useState([])
 
+  function saveUser(user) {
+    const savedUser = { 
+      ...user,
+      prevId: user.id 
+    }
+    localStorage.setItem('user', JSON.stringify(savedUser))
+    console.log('savedUser', savedUser)
+  }
+
   useEffect(() => {
+    console.log('user', user)
     socket.on('connect', () => {
       setUser({
         ...user,
@@ -36,6 +41,7 @@ export const SocketContextProvider = props => {
       
       setError(null)
       setUser(user)
+      saveUser(user)
       callback(payload.room)
     })
   }
@@ -45,8 +51,6 @@ export const SocketContextProvider = props => {
       if (payload.error)
         return setError(payload.error)
 
-      setUser(payload.newUser)
-      setError(null)
       joinRoom(payload.newUser, callback)
     })
   }
@@ -66,8 +70,8 @@ export const SocketContextProvider = props => {
     })
   }
 
-  const getRoomData = (room) => {
-    socket.emit('getRoomData', room, (payload) => {
+  const getRoomData = (user) => {
+    socket.emit('getRoomData', user, (payload) => {
       if (payload.error)
         return setError(payload.error)
 

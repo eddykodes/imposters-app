@@ -25,12 +25,12 @@ export default function Room() {
   let history = useHistory()
 
   useEffect(() => {
-    if (user.room !== id)
+    if (user && user.room !== id)
       return history.push('/')
       
-    getRoomData(id)
+    getRoomData(user)
     // eslint-disable-next-line
-  }, [id])
+  }, [id, user])
 
   return (
     <Box display='flex' flexDirection='column' className={classes.root}>
