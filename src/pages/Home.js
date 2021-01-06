@@ -14,7 +14,7 @@ import Divider from '@material-ui/core/Divider'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: 'calc(100vh - 16px)',
+    minHeight: '100vh',
   },
   logo: {
     backgroundColor: '#eeeeee',

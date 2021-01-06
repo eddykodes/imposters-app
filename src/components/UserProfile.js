@@ -37,8 +37,7 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
     return handleJoinRoom(event)
   }
 
-  const handleJoinRoom = (event) => {
-    event.preventDefault()
+  const handleJoinRoom = () => {
     const userData = {
       ...user,
       name
@@ -48,15 +47,13 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
     })     
   }
 
-  const handleCreateRoom = (event) => {
-    event.preventDefault()
+  const handleCreateRoom = () => {
     createRoom(room => {
       history.push(`/room/${room}`)
     })
   }
   
-  const handleBack = (event) => {
-    event.preventDefault()
+  const handleBack = () => {
     setError(null)
     setCreateRequest(false)
     setShowUserProfile(false)
