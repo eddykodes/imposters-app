@@ -5,6 +5,7 @@ import { SocketContext } from '../context/SocketContext'
 // Components
 import Lobby from '../components/Game/Lobby'
 import Question from '../components/Game/Question'
+import Answer from '../components/Game/Answer'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -39,6 +40,8 @@ export default function Room() {
     switch(gameStatus) {
       case 1:
         return <Question round={1} target={users[0]} />
+      case 2:
+        return <Answer round={1} target={users[0]} />
       default:
         return <Lobby users={users} error={error} />
     }
@@ -49,6 +52,7 @@ export default function Room() {
       <Box pt={3}>
         <Button onClick={() => setGameStatus(0)}>Lobby</Button>
         <Button onClick={() => setGameStatus(1)}>Question</Button>
+        <Button onClick={() => setGameStatus(2)}>Answer</Button>
       </Box>
       { display() }
     </Box>
