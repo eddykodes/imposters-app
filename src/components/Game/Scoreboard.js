@@ -27,18 +27,17 @@ export default function Scoreboard({ scores, round }) {
   const classes = useStyles()
 
   return (
-    <Box display='flex' alignItems='center' flexGrow={1}>
+    <>
+      <Box py={3} textAlign='center'>
+        <Typography variant='h2' align='center' style={{ textTransform: 'uppercase'}}>Scores</Typography>
+          { round === 8 ? (
+            <Typography variant='overline' className={classes.status}>Game Over</Typography>
+          ) : (
+            <Typography variant='overline' className={classes.status}>{8-round} rounds remaining</Typography>
+          )}
+      </Box>
       <Grid container justify='center'>
-        <Grid item xs={12}>
-          <Typography variant='h2' align='center' style={{ textTransform: 'uppercase'}}>Scores</Typography>
-          {
-            round === 8 ? (
-              <Typography variant='h6' align='center' className={classes.status} gutterBottom>Game Over</Typography>
-            ) :(
-              <Typography variant='h6' align='center' className={classes.status} gutterBottom>{8-round} rounds remaining</Typography>
-            )
-          }
-        </Grid>
+        
         <Grid item xs={12} sm={10} md={9} lg={8} className={classes.players}>
         {
           scores.map((score, i) => (
@@ -50,7 +49,7 @@ export default function Scoreboard({ scores, round }) {
         }
         </Grid>
       </Grid>
-    </Box>
+    </>
   )
 }
 
