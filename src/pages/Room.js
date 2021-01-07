@@ -38,7 +38,7 @@ export default function Room() {
   const display = () => {
     switch(gameStatus) {
       case 1:
-        return <Question />
+        return <Question round={1} target={users[0]} />
       default:
         return <Lobby users={users} error={error} />
     }
@@ -47,8 +47,8 @@ export default function Room() {
   return (
     <Box display='flex' flexDirection='column' className={classes.root}>
       <Box pt={3}>
-        <Button onClick={() => setGameStatus('')}>Lobby</Button>
-        <Button onClick={() => setGameStatus('question')}>Question</Button>
+        <Button onClick={() => setGameStatus(0)}>Lobby</Button>
+        <Button onClick={() => setGameStatus(1)}>Question</Button>
       </Box>
       { display() }
     </Box>

@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   name: {
     padding: '5px 10px',
     borderRadius: '5px',
-    backgroundColor: props => props.avatarColor
+    backgroundColor: props => props.avatarColor,
+    textTransform: 'uppercase'
   },
   marginRight: {
     marginRight: theme.spacing(1),
