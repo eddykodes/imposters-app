@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { SocketContext } from '../context/SocketContext'
-import UserCard from '../components/UserCard'
+
+// Components
+import Lobby from '../components/Game/Lobby'
+import Question from '../components/Game/Question'
+
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 
@@ -20,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Room() {
   const classes = useStyles()
+  const [ gameStatus, setGameStatus ] = useState(0)
   const { user, users, error, getRoomData } = useContext(SocketContext)
   const { id } = useParams()
   let history = useHistory()
@@ -32,35 +35,22 @@ export default function Room() {
     // eslint-disable-next-line
   }, [id, user])
 
+  const display = () => {
+    switch(gameStatus) {
+      case 1:
+        return <Question />
+      default:
+        return <Lobby users={users} error={error} />
+    }
+  }
+
   return (
     <Box display='flex' flexDirection='column' className={classes.root}>
-      <Box py={3}>
-        <Typography variant='h2' align='center' className={classes.header}>Lobby</Typography>
-        <Box display='flex' justifyContent='center'>
-          <Box mr={3}>
-            <Typography variant='body1'>Room: </Typography>
-          </Box>
-          <Typography variant='body1' gutterBottom>Players: </Typography>
-        </Box>
+      <Box pt={3}>
+        <Button onClick={() => setGameStatus('')}>Lobby</Button>
+        <Button onClick={() => setGameStatus('question')}>Question</Button>
       </Box>
-      <Box display='flex' flexGrow={1}>
-        {
-          error && <Typography color='error'>{error}</Typography>
-        }
-        <Box>
-          { users && users.map(user => (
-            <UserCard key={user.id} user={user} size='medium' />
-          ))}
-        </Box>
-      </Box>
-      <Box display='flex' justifyContent='center' py={3}>
-        <Box mr={1}>
-          <Button component={RouterLink} to="/">
-            Leave Room
-          </Button>
-        </Box>    
-        <Button>Start Game</Button>
-      </Box>
+      { display() }
     </Box>
   )
 }
