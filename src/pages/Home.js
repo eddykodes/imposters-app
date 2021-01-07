@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { SocketContext } from '../context/SocketContext'
 import logo from '../assets/incognito.svg'
+
+// Components
+import HowToPlay from '../components/HowToPlay'
 import JoinRoomForm from '../components/JoinRoomForm'
 import UserProfile from '../components/UserProfile'
 
@@ -28,15 +31,6 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: '5px'
     }
   },
-  headerTitle: {
-    textTransform: 'uppercase',
-  },
-  headerButton: {
-    width: '280px'
-  },
-  actions: {
-    justifyContent: 'center'
-  },
 }));
 
 export default function Home() {
@@ -58,9 +52,9 @@ export default function Home() {
             <Box className={classes.logo} display='flex' justifyContent='center' alignItems='center'>
               <img alt='Logo' src={logo} />
             </Box>
-            <Typography variant='h2' className={classes.headerTitle} align='center'>Imposters</Typography>
+            <Typography variant='h2' className={classes.headerTitle} align='center' style={{ textTransform: 'uppercase'}}>Imposters</Typography>
             <Box display='flex' justifyContent='center' mt={1} mb={6}>
-              <Button className={classes.headerButton}>How To Play</Button>
+              <HowToPlay />
             </Box>
         </Grid>
         <Grid item xs={11} sm={9} md={7} lg={4}>
