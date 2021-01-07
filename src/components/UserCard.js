@@ -59,3 +59,10 @@ export default function UserCard({ user, size }) {
     </Box>
   )
 }
+
+UserCard.defaultProps = {
+  size: 'small',
+  user: {
+    name: '???'
+  }
+}

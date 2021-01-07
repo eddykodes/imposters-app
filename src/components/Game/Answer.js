@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 // Components
 import UserCard from '../UserCard'
+import AnswerCard from './AnswerCard'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -35,10 +36,6 @@ export default function Answer({ target }) {
   ]
   const [vote, setVote] = useState(null)
 
-  const voteStatus = (i, vote) => {
-    return i === vote
-  }
-
   return (
     <Box display='flex' alignItems='center' flexGrow={1} >
       <Grid container justify='center'>
@@ -48,11 +45,9 @@ export default function Answer({ target }) {
           </Box>
           <Typography variant='h4' align='center' className={classes.header}>{question}</Typography>
         </Grid>
-        <Grid container className={classes.answers}>
+        <Grid container className={classes.answers} spacing={3}>
           { answers.map((answer, i) => (
-            <Box key={i} onClick={() => setVote(i)} mx={3}>
-              <Typography>{answer} - voted: {`${voteStatus(i, vote)}`}</Typography>
-            </Box>
+            <AnswerCard key={i} index={i} answer={answer} voteStatus={i === vote} setVote={setVote}/>
           ))}
         </Grid>
         <Grid item xs={12} md={10} lg={8}>
