@@ -7,6 +7,7 @@ import Lobby from '../components/Game/Lobby'
 import Question from '../components/Game/Question'
 import Answer from '../components/Game/Answer'
 import Results from '../components/Game/Results'
+import Scoreboard from '../components/Game/Scoreboard'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -47,8 +48,10 @@ export default function Room() {
         return <Answer round={1} question={question} target={users[0]} />
       case 3:
         return <Results question={question} target={users[0]} />
+      case 4:
+        return <Scoreboard round={1} />
       default:
-        return <Lobby users={users} error={error} />
+        return <Lobby room={id} users={users} error={error} />
     }
   }
 
@@ -59,6 +62,7 @@ export default function Room() {
         <Button onClick={() => setGameStatus(1)}>Question</Button>
         <Button onClick={() => setGameStatus(2)}>Answer</Button>
         <Button onClick={() => setGameStatus(3)}>Results</Button>
+        <Button onClick={() => setGameStatus(4)}>Scoreboard</Button>
       </Box>
       { display() }
     </Box>

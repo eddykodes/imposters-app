@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function Lobby({ users, error }) {
+export default function Lobby({ room, users, error }) {
   const classes = useStyles()
 
   return (
@@ -29,7 +29,7 @@ export default function Lobby({ users, error }) {
         <Typography variant='h2' align='center' className={classes.header}>Lobby</Typography>
         <Box display='flex' justifyContent='center'>
           <Box mr={3}>
-            <Typography variant='body1'>Room: </Typography>
+            <Typography variant='body1'>Room: {room}</Typography>
           </Box>
           <Typography variant='body1' gutterBottom>Players: {users.length} </Typography>
         </Box>
