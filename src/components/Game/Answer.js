@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 
 // Components
-import UserCard from '../UserCard'
 import AnswerCard from './AnswerCard'
+import QuestionHeader from './QuestionHeader'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
@@ -39,12 +38,7 @@ export default function Answer({ target, question }) {
   return (
     <Box display='flex' alignItems='center' flexGrow={1} >
       <Grid container justify='center'>
-        <Grid item xs={12} md={10} lg={8} >
-          <Box display='flex' justifyContent='center' alignItems='center'>
-            <UserCard user={target} size='small' />
-          </Box>
-          <Typography variant='h4' align='center' className={classes.header}>{question}</Typography>
-        </Grid>
+        <QuestionHeader question={question} target={target} />
         <Grid container className={classes.answers} spacing={3}>
           { answers.map((answer, i) => (
             <AnswerCard key={i} index={i} answer={answer} voteStatus={i === vote} setVote={setVote}/>
