@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Answer({ target }) {
+export default function Answer({ target, question }) {
   const classes = useStyles()
-  const question = 'This is where a question will go?'
+  
   const answers = [
     'Answer 1',
     'Answer 2',

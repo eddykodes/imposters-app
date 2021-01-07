@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+
+// Components
 import UserCard from '../UserCard'
+
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'

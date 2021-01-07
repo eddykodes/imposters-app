@@ -6,6 +6,7 @@ import { SocketContext } from '../context/SocketContext'
 import Lobby from '../components/Game/Lobby'
 import Question from '../components/Game/Question'
 import Answer from '../components/Game/Answer'
+import Results from '../components/Game/Results'
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles'
@@ -28,6 +29,8 @@ export default function Room() {
   const { id } = useParams()
   let history = useHistory()
 
+  const question = 'This is where a question will go?'
+
   useEffect(() => {
     if (user && user.room !== id)
       return history.push('/')
@@ -39,9 +42,11 @@ export default function Room() {
   const display = () => {
     switch(gameStatus) {
       case 1:
-        return <Question round={1} target={users[0]} />
+        return <Question round={1} question={question} target={users[0]} />
       case 2:
-        return <Answer round={1} target={users[0]} />
+        return <Answer round={1} question={question} target={users[0]} />
+      case 3:
+        return <Results question={question} target={users[0]} />
       default:
         return <Lobby users={users} error={error} />
     }
@@ -53,6 +58,7 @@ export default function Room() {
         <Button onClick={() => setGameStatus(0)}>Lobby</Button>
         <Button onClick={() => setGameStatus(1)}>Question</Button>
         <Button onClick={() => setGameStatus(2)}>Answer</Button>
+        <Button onClick={() => setGameStatus(3)}>Results</Button>
       </Box>
       { display() }
     </Box>

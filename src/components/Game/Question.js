@@ -25,9 +25,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Question({ round, target }) {
+export default function Question({ question, round, target }) {
   const classes = useStyles()
-  const question = 'This is where a question will go?'
   const [show, setShow] = useState(false)
   const [answer, setAnswer] = useState('')
 
