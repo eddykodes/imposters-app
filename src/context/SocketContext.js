@@ -15,6 +15,7 @@ export const SocketContextProvider = props => {
   const [question, setQuestion] = useState('')
   const [waitingOn, setWaitingOn] = useState([])
   const [answers, setAnswers] = useState([])
+  const [results, setResults] = useState([])
 
   function saveUser(user) {
     const savedUser = { 
@@ -62,6 +63,9 @@ export const SocketContextProvider = props => {
       
       if (payload.gameData.answers) 
         setAnswers(payload.gameData.answers)
+      
+      if (payload.gameData.votes) 
+        setResults(payload.gameData.votes)
 
       if (payload.gameData.waitingOn) 
         setWaitingOn(payload.gameData.waitingOn)
@@ -125,7 +129,7 @@ export const SocketContextProvider = props => {
   }
 
   const sendVote = (vote) => {
-    if (vote)
+    if (vote !== null)
       socket.emit('sendVote', gameId, user, vote)
   }
 
@@ -144,6 +148,7 @@ export const SocketContextProvider = props => {
       question,
       answers,
       phase,
+      results,
       joinRoom, 
       createRoom, 
       confirmRoom, 

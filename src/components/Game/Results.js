@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { SocketContext } from '../../context/SocketContext'
 
 // Components
 import UserCard from '../UserCard'
@@ -32,8 +33,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Results({ results, question, target }) {
+export default function Results() {
   const classes = useStyles()
+  const { target, question, results } = useContext(SocketContext)
 
   return (
     <Box display='flex' alignItems='center' flexGrow={1}>
@@ -49,8 +51,8 @@ export default function Results({ results, question, target }) {
                   </Box>
                   <Box display='flex'>
                     { result.votes.map((v, i) => (
-                      <Box key={i} mr={1}>
-                        <UserCard user={v} size='small'/>
+                      <Box key={i}>
+                        <UserCard user={v} size='mini'/>
                       </Box>
                     ))}
                   </Box>
@@ -62,39 +64,4 @@ export default function Results({ results, question, target }) {
       </Grid>
     </Box>
   )
-}
-
-Results.defaultProps = {
-  results: [
-    {
-      answer: 'Answer 1',
-      user: { name: 'User 1'},
-      votes: [{name: 'User 2'}, {name: 'User 3'}]
-    },
-    {
-      answer: 'Answer 2',
-      user: { name: 'User 2'},
-      votes: [{name: 'User 1'}]
-    },
-    {
-      answer: 'Answer 3',
-      user: { name: 'User 3'},
-      votes: []
-    },
-    {
-      answer: 'Answer 4',
-      user: { name: 'User 4'},
-      votes: [{name: 'User 5'}]
-    },
-    {
-      answer: 'Answer 5',
-      user: { name: 'User 5'},
-      votes: [{name: 'User 6'}, {name: 'User 4'}]
-    },
-    {
-      answer: 'Answer 6',
-      user: { name: 'User 6'},
-      votes: []
-    },
-  ]
 }

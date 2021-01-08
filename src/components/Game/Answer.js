@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SocketContext } from '../../context/SocketContext'
 
 // Components
@@ -32,7 +32,6 @@ export default function Answer() {
   const [vote, setVote] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const { target, question, answers, waitingOn, sendVote } = useContext(SocketContext)
-
 
   function handleSubmit(event) {
     event.preventDefault()
