@@ -39,7 +39,7 @@ export default function Room() {
       case 1:
         return <Question />
       case 2:
-        return <Answer round={1} question={question} target={target} />
+        return <Answer />
       case 3:
         return <Results question={question} target={target} />
       case 4:

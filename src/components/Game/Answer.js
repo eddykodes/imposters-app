@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { SocketContext } from '../../context/SocketContext'
 
 // Components
 import AnswerCard from './AnswerCard'
@@ -22,18 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Answer({ target, question }) {
+export default function Answer() {
   const classes = useStyles()
-  
-  const answers = [
-    'Answer 1',
-    'Answer 2',
-    'Answer 3',
-    'Answer 4',
-    'Answer 5',
-    'Answer 6',
-  ]
   const [vote, setVote] = useState(null)
+  const { target, question, answers } = useContext(SocketContext)
 
   return (
     <Box display='flex' alignItems='center' flexGrow={1} >
