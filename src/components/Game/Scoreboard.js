@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { SocketContext } from '../../context/SocketContext'
 
 // Component
 import UserCard from '../UserCard'
@@ -23,8 +24,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Scoreboard({ scores, round }) {
+export default function Scoreboard() {
   const classes = useStyles()
+  const { scores, round } = useContext(SocketContext)
 
   return (
     <>
@@ -42,7 +44,7 @@ export default function Scoreboard({ scores, round }) {
         {
           scores.map((score, i) => (
             <Box key={i} display='flex' justifyContent='space-between' alignItems='center'>
-              <UserCard user={score.user} size='medium'/>
+              <UserCard user={score} size='medium'/>
               <Typography variant='h2' gutterBottom >{score.score}</Typography>
             </Box>
           ))
@@ -51,15 +53,4 @@ export default function Scoreboard({ scores, round }) {
       </Grid>
     </>
   )
-}
-
-Scoreboard.defaultProps = {
-  scores: [
-    { user: { name: 'User 1' }, score: 90 },
-    { user: { name: 'User 2' }, score: 80 },
-    { user: { name: 'User 3' }, score: 70 },
-    { user: { name: 'User 4' }, score: 60 },
-    { user: { name: 'User 5' }, score: 50 },
-    { user: { name: 'User 6' }, score: 40 },
-  ]
 }
