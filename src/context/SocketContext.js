@@ -20,7 +20,9 @@ export const SocketContextProvider = props => {
 
   const saveUser = (user) => {
     const savedUser = { 
-      ...user,
+      id: user.id,
+      room: user.room,
+      name: user.name,
       prevId: user.id 
     }
     localStorage.setItem('user', JSON.stringify(savedUser))
