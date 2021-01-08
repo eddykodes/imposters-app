@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import { SocketContext } from '../../context/SocketContext'
 
 // Components
 import UserCard from '../UserCard'
@@ -20,8 +21,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function Lobby({ room, users, error }) {
+export default function Lobby({ room }) {
   const classes = useStyles()
+  const { users, error, startGame } = useContext(SocketContext)
+
+  const handleStart = () => {
+    startGame()
+  }
 
   return (
     <>
@@ -50,7 +56,7 @@ export default function Lobby({ room, users, error }) {
             Leave Room
           </Button>
         </Box>    
-        <Button>Start Game</Button>
+        <Button onClick={handleStart}>Start Game</Button>
       </Box>
     </>
   )

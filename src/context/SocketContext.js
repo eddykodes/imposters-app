@@ -7,6 +7,13 @@ export const SocketContextProvider = props => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
   const [error, setError] = useState(null)
   const [users, setUsers] = useState([])
+  const [gameId, setGameId] = useState('')
+  const [phase, setPhase] = useState(0)
+  const [round, setRound] = useState(0)
+  const [rounds, setRounds] = useState(0)
+  const [target, setTarget] = useState(null)
+  const [question, setQuestion] = useState('')
+  const [waitingOn, setWaitingOn] = useState([])
 
   function saveUser(user) {
     const savedUser = { 
@@ -33,6 +40,29 @@ export const SocketContextProvider = props => {
       setUsers(payload.users)
     })
   }, [users])
+
+  useEffect(() => {
+    socket.on('gameData', (payload) => {
+      console.log(payload.gameData)
+      if (payload.gameData.rounds) 
+        setRounds(payload.gameData.rounds)
+
+      if (payload.gameData.round) 
+        setRound(payload.gameData.round)
+
+      if (payload.gameData.target) 
+        setTarget(payload.gameData.target)
+
+      if (payload.gameData.question) 
+        setQuestion(payload.gameData.question)
+
+      if (payload.gameData.waitingOn) 
+        setWaitingOn(payload.gameData.waitingOn)
+
+      if (payload.gameData.phase) 
+        setPhase(payload.gameData.phase)
+    })
+  }, [gameId])
 
   const joinRoom = (user, callback) => {
     socket.emit('joinRoom', user, (payload) => {
@@ -79,8 +109,31 @@ export const SocketContextProvider = props => {
     })
   }
 
+  const startGame = () => {
+    socket.emit('startGame', user, (payload) => {
+      setGameId(payload.gameId)
+    })
+  }
+
   return (
-    <SocketContext.Provider value={{ user, setUser, error, setError, users, joinRoom, createRoom, confirmRoom, getRoomData }}>
+    <SocketContext.Provider value={{ 
+      user, 
+      setUser, 
+      error, 
+      setError, 
+      users,
+      rounds,
+      waitingOn,
+      round,
+      target,
+      question,
+      phase,
+      joinRoom, 
+      createRoom, 
+      confirmRoom, 
+      getRoomData, 
+      startGame 
+    }}>
       { props.children }
     </SocketContext.Provider>
   )
