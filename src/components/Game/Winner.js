@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { SocketContext } from '../../context/SocketContext'
 
 // Components
 import UserCard from '../UserCard'
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 export default function Winner({ winner }) {
   const classes = useStyles()
+  const { scores } = useContext(SocketContext)
 
   return (
     <Box display='flex' alignItems='center' flexGrow={1} >
@@ -32,7 +34,7 @@ export default function Winner({ winner }) {
           <Typography variant='h2' className={classes.header}>Winner</Typography>
         </Grid>
         <Grid item xs={12} className={classes.winner}>
-          <UserCard user={winner} size='large'/>
+          <UserCard user={scores[0]} size='large'/>
         </Grid>
         <Grid item xs={11} sm={9} md={7} lg={4}>
           <Grid container spacing={1}>

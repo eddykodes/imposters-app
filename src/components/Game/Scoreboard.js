@@ -26,16 +26,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Scoreboard() {
   const classes = useStyles()
-  const { scores, round } = useContext(SocketContext)
+  const { scores, round, rounds } = useContext(SocketContext)
 
   return (
     <>
       <Box py={3} textAlign='center'>
         <Typography variant='h2' align='center' style={{ textTransform: 'uppercase'}}>Scores</Typography>
-          { round === 8 ? (
+          { round === rounds ? (
             <Typography variant='overline' className={classes.status}>Game Over</Typography>
           ) : (
-            <Typography variant='overline' className={classes.status}>{8-round} rounds remaining</Typography>
+            <Typography variant='overline' className={classes.status}>{rounds-round} rounds remaining</Typography>
           )}
       </Box>
       <Grid container justify='center'>

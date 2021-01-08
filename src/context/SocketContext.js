@@ -68,8 +68,8 @@ export const SocketContextProvider = props => {
       if (payload.gameData.votes) 
         setResults(payload.gameData.votes)
 
-      if (payload.gameData.scoresData) 
-        setScores(payload.gameData.scoresData)
+      if (payload.gameData.scores) 
+        setScores(payload.gameData.scores)
 
       if (payload.gameData.waitingOn) 
         setWaitingOn(payload.gameData.waitingOn)
