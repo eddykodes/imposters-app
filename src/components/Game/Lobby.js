@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function Lobby({ room }) {
+export default function Lobby({ room, handleBack }) {
   const classes = useStyles()
   const { users, error, startGame } = useContext(SocketContext)
 
@@ -52,7 +52,7 @@ export default function Lobby({ room }) {
       </Box>
       <Box display='flex' justifyContent='center' py={3}>
         <Box mr={1}>
-          <Button component={RouterLink} to="/">
+          <Button onClick={handleBack}>
             Leave Room
           </Button>
         </Box>    

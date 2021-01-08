@@ -39,7 +39,7 @@ export const SocketContextProvider = props => {
   }, [user])
 
   useEffect(() => {
-    socket.on('userJoin', (payload) => {
+    socket.on('usersUpdate', (payload) => {
       setUsers(payload.users)
     })
   }, [users])
@@ -88,6 +88,12 @@ export const SocketContextProvider = props => {
       setUser(user)
       saveUser(user)
       callback(payload.room)
+    })
+  }
+
+  const leaveRoom = (callback) => {
+    socket.emit('leaveRoom', user, () => {
+      callback()
     })
   }
 
@@ -155,6 +161,7 @@ export const SocketContextProvider = props => {
       results,
       scores,
       joinRoom, 
+      leaveRoom,
       createRoom, 
       confirmRoom, 
       getRoomData, 

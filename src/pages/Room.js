@@ -22,17 +22,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Room() {
   const classes = useStyles()
-  const { user, question, target, users, phase, getRoomData } = useContext(SocketContext)
+  const { user, phase, getRoomData, leaveRoom } = useContext(SocketContext)
   const { id } = useParams()
   let history = useHistory()
 
   useEffect(() => {
     if (user && user.room !== id)
       return history.push('/')
-      
+    
     getRoomData(user)
     // eslint-disable-next-line
   }, [id, user])
+
+  const handleBack = () => {
+    leaveRoom(() => {
+      history.push('/')
+    })
+  }
 
   const display = () => {
     switch(phase) {
@@ -41,13 +47,13 @@ export default function Room() {
       case 2:
         return <Answer />
       case 3:
-        return <Results question={question} target={target} />
+        return <Results />
       case 4:
-        return <Scoreboard round={1} />
+        return <Scoreboard />
       case 5:
-        return <Winner winner={users[0]} />
+        return <Winner handleBack={handleBack} />
       default:
-        return <Lobby room={id} />
+        return <Lobby room={id} handleBack={handleBack} />
     }
   }
 
