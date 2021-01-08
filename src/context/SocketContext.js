@@ -18,7 +18,7 @@ export const SocketContextProvider = props => {
   const [results, setResults] = useState([])
   const [scores, setScores] = useState([])
 
-  function saveUser(user) {
+  const saveUser = (user) => {
     const savedUser = { 
       ...user,
       prevId: user.id 
@@ -87,7 +87,9 @@ export const SocketContextProvider = props => {
       setError(null)
       setUser(user)
       saveUser(user)
-      callback(payload.room)
+      setPhase(0)
+      if (callback)
+        callback(payload.room)
     })
   }
 

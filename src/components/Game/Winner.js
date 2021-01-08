@@ -10,11 +10,11 @@ import Box from '@material-ui/core/Box'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-export default function Winner({ handleBack }) {
-  const { scores } = useContext(SocketContext)
+export default function Winner() {
+  const { scores, user, joinRoom } = useContext(SocketContext)
 
   const handleRestart = () => {
-
+    joinRoom(user)   
   }
 
   return (
@@ -28,7 +28,7 @@ export default function Winner({ handleBack }) {
         </Box>
         <Box display='flex' justifyContent='center' py={3}>
           <Box mr={1}>
-            <Button onClick={handleBack}>
+            <Button component={RouterLink} to="/">
               Leave Room
             </Button>
           </Box>    
