@@ -15,7 +15,6 @@ export const SocketContextProvider = props => {
   const [question, setQuestion] = useState('')
   const [waitingOn, setWaitingOn] = useState([])
   const [answers, setAnswers] = useState([])
-  const [submitted, setSubmitted] = useState(false)
 
   function saveUser(user) {
     const savedUser = { 
@@ -121,11 +120,15 @@ export const SocketContextProvider = props => {
     socket.emit('startGame', user)
   }
 
-  const sendAnswer = (answer, callback) => {
-    socket.emit('sendAnswer', gameId, user, answer, () => {
-      setSubmitted(true)
-    })
+  const sendAnswer = (answer) => {
+    socket.emit('sendAnswer', gameId, user, answer)
   }
+
+  const sendVote = (vote) => {
+    if (vote)
+      socket.emit('sendVote', gameId, user, vote)
+  }
+
 
   return (
     <SocketContext.Provider value={{ 
@@ -141,14 +144,13 @@ export const SocketContextProvider = props => {
       question,
       answers,
       phase,
-      submitted,
-      setSubmitted,
       joinRoom, 
       createRoom, 
       confirmRoom, 
       getRoomData, 
       startGame,
-      sendAnswer 
+      sendAnswer,
+      sendVote, 
     }}>
       { props.children }
     </SocketContext.Provider>

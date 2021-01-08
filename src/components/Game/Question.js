@@ -26,7 +26,8 @@ export default function Question() {
   const classes = useStyles()
   const [show, setShow] = useState(false)
   const [answer, setAnswer] = useState('')
-  const { question, target, round, submitted, sendAnswer, waitingOn } = useContext(SocketContext)
+  const [submitted, setSubmitted] = useState(false)
+  const { question, target, round, sendAnswer, waitingOn } = useContext(SocketContext)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -43,6 +44,7 @@ export default function Question() {
   function handleSubmit(event) {
     event.preventDefault()
     sendAnswer(answer)
+    setSubmitted(true)
   }
 
   return (
@@ -84,9 +86,7 @@ export default function Question() {
               </Box>
             </Grid>
             </>
-          )
-            
-          }
+          )}
         </Grid>
       ) : (
         <Grid container direction='column' alignItems='center' spacing={3}>
