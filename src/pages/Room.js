@@ -34,10 +34,10 @@ export default function Room() {
     // eslint-disable-next-line
   }, [id, user])
 
-  const display = (phase) => {
+  const display = () => {
     switch(phase) {
       case 1:
-        return <Question round={1} question={question} target={target} />
+        return <Question />
       case 2:
         return <Answer round={1} question={question} target={target} />
       case 3:
@@ -53,7 +53,7 @@ export default function Room() {
 
   return (
     <Box display='flex' flexDirection='column' className={classes.root}>
-      { display(phase) }
+      { display() }
     </Box>
   )
 }

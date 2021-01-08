@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { SocketContext } from '../../context/SocketContext'
 
 // Component
 import UserCard from '../UserCard'
@@ -21,10 +22,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function Question({ question, round, target }) {
+export default function Question() {
   const classes = useStyles()
   const [show, setShow] = useState(false)
   const [answer, setAnswer] = useState('')
+  const { question, target, round, submitted, sendAnswer, waitingOn } = useContext(SocketContext)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,29 +40,53 @@ export default function Question({ question, round, target }) {
     setAnswer(event.target.value)
   }
 
+  function handleSubmit(event) {
+    event.preventDefault()
+    sendAnswer(answer)
+  }
+
   return (
     <Box display='flex' alignItems='center' flexGrow={1}>
       { show ? (
         <Grid container justify='center'>
           <QuestionHeader question={question} target={target} />
-          <Grid item xs={10} md={8} lg={6}>
-            <Box component='form' my={6}>
-              <FormControl fullWidth className={classes.formInput}>
-                <Typography variant='overline' align='center' gutterBottom>Answer:</Typography>
-                <FilledInput 
-                  required 
-                  placeholder='Your answer here'
-                  value={answer}
-                  onChange={handleChange} 
-                />
-              </FormControl>
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={10} lg={8}>
-            <Box display='flex' justifyContent='center'>
-              <Button >Submit</Button>
-            </Box>
-          </Grid>
+          { submitted ? (
+            <Grid item xs={12} md={10} lg={8} className={classes.action}>
+              <Box display='flex' justifyContent='center' mt={6}>
+                <Typography>Waiting on...</Typography>
+              </Box>
+              <Box display='flex' justifyContent='center' mt={1}>
+                { waitingOn.map(user => (
+                  <Box key={user.id} mr={1}>
+                    <UserCard user={user} size='mini' />
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+          ) : (
+            <>
+            <Grid item xs={10} md={8} lg={6}>
+              <Box component='form' my={6} onSubmit={handleSubmit}>
+                <FormControl fullWidth className={classes.formInput}>
+                  <Typography variant='overline' align='center' gutterBottom>Answer:</Typography>
+                  <FilledInput 
+                    required 
+                    placeholder='Your answer here'
+                    value={answer}
+                    onChange={handleChange} 
+                  />
+                </FormControl>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={10} lg={8}>
+              <Box display='flex' justifyContent='center'>
+                <Button type='submit' onClick={handleSubmit}>Submit</Button>
+              </Box>
+            </Grid>
+            </>
+          )
+            
+          }
         </Grid>
       ) : (
         <Grid container direction='column' alignItems='center' spacing={3}>

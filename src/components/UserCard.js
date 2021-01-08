@@ -34,28 +34,32 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function UserCard({ user, size }) {
-  const { avatarSize, imgSize, textSize } = cardSizes(size)
-  const classes = useStyles({ avatarColor: '#EEEEEE', avatarSize, imgSize})
-
-  function cardSizes(size) {
-    if (size === 'small') {
-      return {avatarSize: '30px', imgSize: '18px', textSize: 'body2'}
-    } else if (size === 'medium') {
-      return {avatarSize: '75px', imgSize: '40px', textSize: 'h4'}
-    } else {
-      return {avatarSize: '180px', imgSize: '115px', textSize: 'h1'}
-    }    
+  const cardSizes = () => {
+    switch(size) {
+      case 'small':
+        return { avatarSize: '30px', imgSize: '18px', textSize: 'body2' }
+      case 'medium':
+        return { avatarSize: '75px', imgSize: '40px', textSize: 'h4' }
+      case 'large':
+        return { avatarSize: '180px', imgSize: '115px', textSize: 'h1' }
+      default:
+        return { avatarSize: '30px', imgSize: '18px', textSize: '' }
+    }
   }
+
+  const { avatarSize, imgSize, textSize } = cardSizes()
+  const classes = useStyles({ avatarColor: '#EEEEEE', avatarSize, imgSize})
 
   return (
     <Box display='flex' alignItems='center' className={classes.root}>
       <Box className={classes.avatar} display='flex' justifyContent='center' alignItems='center' mr={1}>
         <img alt='Logo' src={logo} />
       </Box>
-      <Box>
-        <Typography variant={textSize} className={classes.name}>{user.name}</Typography>
-      </Box>
-      
+      { size !== 'mini' &&
+        <Box>
+          <Typography variant={textSize} className={classes.name}>{user.name}</Typography>
+        </Box>
+      }
     </Box>
   )
 }

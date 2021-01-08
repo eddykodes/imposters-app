@@ -14,6 +14,8 @@ export const SocketContextProvider = props => {
   const [target, setTarget] = useState(null)
   const [question, setQuestion] = useState('')
   const [waitingOn, setWaitingOn] = useState([])
+  const [answers, setAnswers] = useState([])
+  const [submitted, setSubmitted] = useState(false)
 
   function saveUser(user) {
     const savedUser = { 
@@ -44,6 +46,9 @@ export const SocketContextProvider = props => {
   useEffect(() => {
     socket.on('gameData', (payload) => {
       console.log(payload.gameData)
+      if (payload.gameData.id) 
+        setGameId(payload.gameData.id)
+
       if (payload.gameData.rounds) 
         setRounds(payload.gameData.rounds)
 
@@ -55,6 +60,9 @@ export const SocketContextProvider = props => {
 
       if (payload.gameData.question) 
         setQuestion(payload.gameData.question)
+      
+      if (payload.gameData.answers) 
+        setAnswers(payload.gameData.answers)
 
       if (payload.gameData.waitingOn) 
         setWaitingOn(payload.gameData.waitingOn)
@@ -110,8 +118,12 @@ export const SocketContextProvider = props => {
   }
 
   const startGame = () => {
-    socket.emit('startGame', user, (payload) => {
-      setGameId(payload.gameId)
+    socket.emit('startGame', user)
+  }
+
+  const sendAnswer = (answer, callback) => {
+    socket.emit('sendAnswer', gameId, user, answer, () => {
+      setSubmitted(true)
     })
   }
 
@@ -127,12 +139,16 @@ export const SocketContextProvider = props => {
       round,
       target,
       question,
+      answers,
       phase,
+      submitted,
+      setSubmitted,
       joinRoom, 
       createRoom, 
       confirmRoom, 
       getRoomData, 
-      startGame 
+      startGame,
+      sendAnswer 
     }}>
       { props.children }
     </SocketContext.Provider>
