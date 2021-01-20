@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile({ createRequest, setCreateRequest, setShowUserProfile }) {
   const classes = useStyles()
-  const { user, error, setError, joinRoom, createRoom } = useContext(SocketContext)
+  const { setLoading, user, error, setError, joinRoom, createRoom } = useContext(SocketContext)
   const [ name, setName ] = useState('')
   let history = useHistory()
 
@@ -48,12 +48,15 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   }
 
   const handleJoinRoom = () => {
+    setLoading(true)
     joinRoom(userData, (room) => {
       history.push(`/room/${room}`)
+      setLoading(false)
     })     
   }
 
   const handleCreateRoom = () => {
+
     createRoom(userData, (room) => {
       history.push(`/room/${room}`)
     })

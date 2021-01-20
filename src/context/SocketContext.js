@@ -4,6 +4,7 @@ import { socket } from '../socket'
 export const SocketContext = createContext()
 
 export const SocketContextProvider = props => {
+  const [loading, setLoading] = useState(false)
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
   const [error, setError] = useState(null)
   const [users, setUsers] = useState([])
@@ -150,6 +151,8 @@ export const SocketContextProvider = props => {
 
   return (
     <SocketContext.Provider value={{ 
+      loading,
+      setLoading,
       user, 
       setUser, 
       error, 
