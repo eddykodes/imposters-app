@@ -27,17 +27,14 @@ export const SocketContextProvider = props => {
       prevId: user.id 
     }
     localStorage.setItem('user', JSON.stringify(savedUser))
-    console.log('savedUser', savedUser)
   }
 
   useEffect(() => {
-    console.log('user', user)
     socket.on('connect', () => {
       setUser({
         ...user,
         id: socket.id
       })
-      console.log('connected with ID:', socket.id)
     })
   }, [user])
 
@@ -49,7 +46,6 @@ export const SocketContextProvider = props => {
 
   useEffect(() => {
     socket.on('gameData', (payload) => {
-      console.log(payload.gameData)
       if (payload.gameData.id) 
         setGameId(payload.gameData.id)
 
