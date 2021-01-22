@@ -22,6 +22,10 @@ const theme = createMuiTheme({
       disableUnderline: true,
       autoFocus: true,
       margin: 'dense',
+    },
+    MuiCircularProgress: {
+      color: 'inherit',
+      size: 21
     }
   },
   typography: {

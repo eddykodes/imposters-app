@@ -4,6 +4,7 @@ import { socket } from '../socket'
 export const SocketContext = createContext()
 
 export const SocketContextProvider = props => {
+  const [loading, setLoading] = useState(false)
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
   const [error, setError] = useState(null)
   const [users, setUsers] = useState([])
@@ -26,17 +27,14 @@ export const SocketContextProvider = props => {
       prevId: user.id 
     }
     localStorage.setItem('user', JSON.stringify(savedUser))
-    console.log('savedUser', savedUser)
   }
 
   useEffect(() => {
-    console.log('user', user)
     socket.on('connect', () => {
       setUser({
         ...user,
         id: socket.id
       })
-      console.log('connected with ID:', socket.id)
     })
   }, [user])
 
@@ -48,7 +46,6 @@ export const SocketContextProvider = props => {
 
   useEffect(() => {
     socket.on('gameData', (payload) => {
-      console.log(payload.gameData)
       if (payload.gameData.id) 
         setGameId(payload.gameData.id)
 
@@ -150,6 +147,8 @@ export const SocketContextProvider = props => {
 
   return (
     <SocketContext.Provider value={{ 
+      loading,
+      setLoading,
       user, 
       setUser, 
       error, 

@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import FormControl from '@material-ui/core/FormControl'
 import FilledInput from '@material-ui/core/FilledInput'
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const useStyles = makeStyles((theme) => ({
   formInput: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile({ createRequest, setCreateRequest, setShowUserProfile }) {
   const classes = useStyles()
-  const { user, error, setError, joinRoom, createRoom } = useContext(SocketContext)
+  const { loading, setLoading, user, error, setError, joinRoom, createRoom } = useContext(SocketContext)
   const [ name, setName ] = useState('')
   let history = useHistory()
 
@@ -41,6 +42,7 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    setLoading(true)
     if (createRequest)
       return handleCreateRoom(event)
     
@@ -49,12 +51,14 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
 
   const handleJoinRoom = () => {
     joinRoom(userData, (room) => {
+      setLoading(false)
       history.push(`/room/${room}`)
     })     
   }
 
   const handleCreateRoom = () => {
     createRoom(userData, (room) => {
+      setLoading(false)
       history.push(`/room/${room}`)
     })
   }
@@ -89,7 +93,12 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
         </Grid>
         <Grid item xs={12} sm={6}>
           <Button fullWidth type='submit' onClick={handleSubmit}>
-            {createRequest ? 'Create Room' : 'Join Room'}
+            { loading 
+              ? <CircularProgress /> 
+              : createRequest 
+                ? 'Create Room' 
+                : 'Join Room'
+            }
           </Button>
         </Grid>
       </Grid>
