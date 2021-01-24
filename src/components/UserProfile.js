@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { SocketContext } from '../context/SocketContext'
 import { useHistory } from 'react-router-dom'
 
@@ -22,19 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile({ createRequest, setCreateRequest, setShowUserProfile }) {
   const classes = useStyles()
-  const { loading, setLoading, user, error, setError, joinRoom, createRoom } = useContext(SocketContext)
-  const [ name, setName ] = useState('')
+  const { name, setName, room, id, loading, setLoading, error, setError, joinRoom, createRoom } = useContext(SocketContext)
   let history = useHistory()
 
-  useEffect(() => {
-    if (user && user.name)
-      setName(user.name)
-  }, [user])
-
-  const userData = {
-    ...user,
-    name
-  }
+  const userData = { id, name, room }
 
   const handleChange = (event) => {
     setName(event.target.value)
@@ -44,9 +35,9 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
     event.preventDefault()
     setLoading(true)
     if (createRequest)
-      return handleCreateRoom(event)
+      return handleCreateRoom()
     
-    return handleJoinRoom(event)
+    return handleJoinRoom()
   }
 
   const handleJoinRoom = () => {

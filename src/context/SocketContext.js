@@ -1,11 +1,16 @@
 import React, { createContext, useState, useEffect } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { socket } from '../socket'
 
 export const SocketContext = createContext()
 
 export const SocketContextProvider = props => {
   const [loading, setLoading] = useState(false)
+  
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
+  const [id, setId] = useState(uuidv4())
+  const [name, setName] = useState('')
+  const [room, setRoom] = useState('')
   const [error, setError] = useState(null)
   const [users, setUsers] = useState([])
   const [gameId, setGameId] = useState('')
@@ -19,23 +24,19 @@ export const SocketContextProvider = props => {
   const [results, setResults] = useState([])
   const [scores, setScores] = useState([])
 
-  const saveUser = (user) => {
-    const savedUser = { 
-      id: user.id,
-      room: user.room,
-      name: user.name,
-      prevId: user.id 
-    }
-    localStorage.setItem('user', JSON.stringify(savedUser))
+  const saveUser = (saveData) => {
+    setUser(saveData)
+    localStorage.setItem('user', JSON.stringify(saveData))
   }
 
   useEffect(() => {
-    socket.on('connect', () => {
-      setUser({
-        ...user,
-        id: socket.id
-      })
-    })
+    // Set user data if localstorage user
+    if (user) {
+      setId(user.id)
+      setName(user.name)
+      setRoom(user.room)
+    }
+    return 
   }, [user])
 
   useEffect(() => {
@@ -84,7 +85,6 @@ export const SocketContextProvider = props => {
         return setError(payload.error)
       
       setError(null)
-      setUser(user)
       saveUser(user)
       setPhase(0)
       if (callback)
@@ -99,6 +99,9 @@ export const SocketContextProvider = props => {
   }
 
   const createRoom = (user, callback) => {
+    console.log('socket', socket)
+    console.log('user', user)
+
     socket.emit('createRoom', user, (payload) => {
       if (payload.error)
         return setError(payload.error)
@@ -112,11 +115,6 @@ export const SocketContextProvider = props => {
       if (payload.error)
         return setError(payload.error)
       
-      setUser({
-        ...user,
-        room
-      })
-
       setError(null)
       callback()
     })
@@ -147,6 +145,11 @@ export const SocketContextProvider = props => {
 
   return (
     <SocketContext.Provider value={{ 
+      name,
+      setName,
+      room,
+      setRoom,
+      id,
       loading,
       setLoading,
       user, 
