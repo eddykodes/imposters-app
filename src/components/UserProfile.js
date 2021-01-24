@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserProfile({ createRequest, setCreateRequest, setShowUserProfile }) {
   const classes = useStyles()
-  const { name, setName, room, id, loading, setLoading, error, setError, joinRoom, createRoom } = useContext(SocketContext)
+  const { name, setName, room, id, loading, setLoading, error, setError, joinRoom } = useContext(SocketContext)
   let history = useHistory()
 
   const userData = { id, name, room }
@@ -34,26 +34,12 @@ export default function UserProfile({ createRequest, setCreateRequest, setShowUs
   const handleSubmit = (event) => {
     event.preventDefault()
     setLoading(true)
-    if (createRequest)
-      return handleCreateRoom()
-    
-    return handleJoinRoom()
-  }
-
-  const handleJoinRoom = () => {
     joinRoom(userData, (room) => {
       setLoading(false)
       history.push(`/room/${room}`)
-    })     
+    })  
   }
 
-  const handleCreateRoom = () => {
-    createRoom(userData, (room) => {
-      setLoading(false)
-      history.push(`/room/${room}`)
-    })
-  }
-  
   const handleBack = () => {
     setError(null)
     setCreateRequest(false)

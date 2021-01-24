@@ -6,12 +6,13 @@ export const SocketContext = createContext()
 
 export const SocketContextProvider = props => {
   const [loading, setLoading] = useState(false)
-  
+  const [error, setError] = useState(null)
+
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
   const [id, setId] = useState(uuidv4())
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
-  const [error, setError] = useState(null)
+  
   const [users, setUsers] = useState([])
   const [gameId, setGameId] = useState('')
   const [phase, setPhase] = useState(0)
@@ -98,18 +99,6 @@ export const SocketContextProvider = props => {
     })
   }
 
-  const createRoom = (user, callback) => {
-    console.log('socket', socket)
-    console.log('user', user)
-
-    socket.emit('createRoom', user, (payload) => {
-      if (payload.error)
-        return setError(payload.error)
-
-      joinRoom(payload.newUser, callback)
-    })
-  }
-
   const confirmRoom = (room, callback) => {
     socket.emit('confirmRoom', room, (payload) => {
       if (payload.error)
@@ -168,7 +157,6 @@ export const SocketContextProvider = props => {
       scores,
       joinRoom, 
       leaveRoom,
-      createRoom, 
       confirmRoom, 
       getRoomData, 
       startGame,
