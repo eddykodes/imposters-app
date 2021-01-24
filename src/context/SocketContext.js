@@ -12,7 +12,7 @@ export const SocketContextProvider = props => {
   const [id, setId] = useState(uuidv4())
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
-  
+
   const [users, setUsers] = useState([])
   const [gameId, setGameId] = useState('')
   const [phase, setPhase] = useState(0)
@@ -86,7 +86,7 @@ export const SocketContextProvider = props => {
         return setError(payload.error)
       
       setError(null)
-      saveUser(user)
+      saveUser({ ...user, room: payload.room })
       setPhase(0)
       if (callback)
         callback(payload.room)
