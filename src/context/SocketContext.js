@@ -113,8 +113,6 @@ export const SocketContextProvider = props => {
     socket.emit('getRoomData', user, (payload) => {
       if (payload.error)
         return setError(payload.error)
-
-      setUsers(payload.roomData.users)
     })
   }
 
@@ -129,6 +127,13 @@ export const SocketContextProvider = props => {
   const sendVote = (vote) => {
     if (vote !== null)
       socket.emit('sendVote', gameId, user, vote)
+  }
+
+  const restartGame = () => {
+    setPhase(0)
+    setGameId('')
+    setRounds(0)
+    setRound(0)
   }
 
 
@@ -162,6 +167,7 @@ export const SocketContextProvider = props => {
       startGame,
       sendAnswer,
       sendVote, 
+      restartGame
     }}>
       { props.children }
     </SocketContext.Provider>

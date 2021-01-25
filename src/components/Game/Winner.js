@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import { SocketContext } from '../../context/SocketContext'
 
 // Components
@@ -10,11 +9,11 @@ import Box from '@material-ui/core/Box'
 import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 
-export default function Winner() {
-  const { scores, user, joinRoom } = useContext(SocketContext)
+export default function Winner({ handleBack }) {
+  const { scores, restartGame } = useContext(SocketContext)
 
   const handleRestart = () => {
-    joinRoom(user)   
+    restartGame()
   }
 
   return (
@@ -28,7 +27,7 @@ export default function Winner() {
         </Box>
         <Box display='flex' justifyContent='center' py={3}>
           <Box mr={1}>
-            <Button component={RouterLink} to="/">
+            <Button onClick={handleBack}>
               Leave Room
             </Button>
           </Box>    
